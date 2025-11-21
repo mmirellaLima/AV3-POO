@@ -1,5 +1,6 @@
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 
 public class Lance {
     private int idLance;
@@ -36,4 +37,14 @@ public class Lance {
     public Time getHora(){return horaLance;}
     public void setHora(Time hora){this.horaLance = hora;}
 
+    public void mostrar(){
+        System.out.println("Nome do Participante: " + participante);
+        System.out.println("Item leiloado: " + itemLeilao);
+        System.out.println("Valor do lance: " + valorLance);
+        System.out.println("Data do lance: " + dataLance);
+        System.out.println("Horário do lance: " + horaLance);
+        System.out.println("--------------------------");
+    }
+
+    
 }

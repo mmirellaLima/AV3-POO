@@ -38,4 +38,29 @@ public class Participante{
     public String getTelefone(){return telefoneParticipante;}
     public void setTelefone(String telefone){this.telefoneParticipante = telefone;}
 
+    public void mostrar(){
+        System.out.println("Nome: " + nomeParticipante);
+        System.out.println("Login: " + loginParticipante);
+        System.out.println("Email: " + emailParticipante);
+        System.out.println("Telefone: " + telefoneParticipante);
+        System.out.println("Id: " + idParticipante);
+        System.out.println("--------------------------");
+    }
+
+    public Participante loginParticipante(){
+        if(loginParticipante){
+            return participante;
+        }
+    }
+
+    public Boolean registrarParticipantes(){
+        
+    }
+
+    public ArrayList<Participante> listarParticipantes(){
+        ArrayList<Participante> participantes = new ArrayList<>();
+        for(participante p :participantes){
+            p.mostrar();
+        }
+    }
 }
