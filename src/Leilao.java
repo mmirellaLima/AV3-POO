@@ -73,7 +73,7 @@ public class Leilao {
             System.out.println("Erro: Leilão já existente!");
             return false;
         }else{
-            FileWriter fw = new FileWriter("Leilao.txt",true);
+        FileWriter fw = new FileWriter("Leilao.txt",true);
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(idLeilao +";"+ dataInicioLeilao +";"+ horaInicioLeilao +";"+ dataFimLeilao +";"+ horaFimLeilao +";"+statusLeilao);
         bw.newLine();
@@ -111,8 +111,18 @@ public class Leilao {
         }
         return null;
     }
-     public ArrayList<Leilao> listarLeiloes(){
+     public ArrayList<Leilao> listarLeiloes()throws Exception{
         ArrayList<Leilao> leiloes = new ArrayList<>();
+        FileReader fr = new FileReader("Leilao.txt");
+        BufferedReader br = new BufferedReader(fr);
+        String linha = "";
+        while((linha = br.readLine()) != null){
+            String[] dados = linha.split(";");
+            Leilao l = new Leilao(Integer.parseInt(dados[0]),Date.valueOf(dados[1]),Time.valueOf(dados[2]),Date.valueOf(dados[3]),Time.valueOf(dados[4]),Boolean.valueOf(dados[5]));
+
+            leiloes.add(l);
+        }
+        br.close();
         for( Leilao l :leiloes){
             l.mostrar();
         }
