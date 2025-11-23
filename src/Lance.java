@@ -26,7 +26,7 @@ public class Lance {
     public void setParticipante(Participante participante){this.participante = participante;}
 
     public ItemLeilao getItemLeilao(){return itemLeilao;}
-    public void setItemLeilao(ItemLeilao itemLeilao){this.ItemLeilao = itemLeilao;}
+    public void setItemLeilao(ItemLeilao itemLeilao){this.itemLeilao = itemLeilao;}
 
     public Double getValor(){return valorLance;}
     public void setValor(Double valor){this.valorLance = valor;}
@@ -46,5 +46,11 @@ public class Lance {
         System.out.println("--------------------------");
     }
 
-    
+    public ArrayList<Lance> listarLances(){
+        ArrayList<Lance> lances = new ArrayList<>();
+        for( Lance l :lances){
+            l.mostrar();
+        }
+        return lances;
+    }
 }

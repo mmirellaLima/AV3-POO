@@ -1,3 +1,9 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.util.ArrayList;
+
 public class Participante{
     private int idParticipante;
     private String nomeParticipante;
@@ -47,20 +53,72 @@ public class Participante{
         System.out.println("--------------------------");
     }
 
-    public Participante loginParticipante(){
-        if(loginParticipante){
-            return participante;
+    public Participante loginParticipante()throws Exception{
+        FileReader fr = new FileReader("Participante.txt");
+        BufferedReader br = new BufferedReader(fr);
+        String linha = "";
+        while ((linha = br.readLine()) != null){
+            String[] dados = linha.split(";");
+            if(loginParticipante.equals(dados[2]) && senhaParticipante.equals(dados[3])){
+                System.out.println("login realizado com sucesso!");
+
+                return new Participante(Integer.parseInt(dados[0]),dados[1], dados[2], dados[3], dados[4], dados[5], dados[6]);
+            }
+        }
+        br.close();
+        System.out.println("Login inválido. Participante não encontrado!");
+         return null;
+    }
+
+    public Participante consultarParticipantePorEmail(String email)throws Exception{
+         FileReader fr = new FileReader("Participante.txt");
+        BufferedReader br = new BufferedReader(fr);
+        String linha = "";
+        while ((linha = br.readLine()) != null){
+            String[] dados = linha.split(";");
+            if(emailParticipante.equals(dados[4])){
+                System.out.println("Participante(email) encontrado!");
+                return new Participante(Integer.parseInt(dados[0]),dados[1], dados[2], dados[3], dados[4], dados[5], dados[6]);
+            }
+        }
+        br.close();
+        System.out.println("Participante(email) não encontrado!");
+        return null;
+    }
+
+    public Boolean registrarParticipantes(Participante p)throws Exception{
+        Participante resultado =consultarParticipantePorEmail(p.getEmail());
+
+        if(resultado != null){
+            System.out.println("Erro: Participante já existente!");
+            return false;
+        }else{
+            FileWriter fw = new FileWriter("Participante.txt",true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(idParticipante +";"+ nomeParticipante +";"+ loginParticipante +";"+ senhaParticipante +";"+ emailParticipante +";"+ enderecoParticipante +";"+telefoneParticipante);
+            bw.newLine();
+            bw.close();
+
+            System.out.println("Participante registrado com sucesso!");
+            return true;
         }
     }
 
-    public Boolean registrarParticipantes(){
-        
-    }
-
-    public ArrayList<Participante> listarParticipantes(){
+    public ArrayList<Participante> listarParticipantes()throws Exception{
         ArrayList<Participante> participantes = new ArrayList<>();
-        for(participante p :participantes){
+
+        FileReader fr = new FileReader("Participante.txt");
+        BufferedReader br = new BufferedReader(fr);
+        String linha = "";
+        while ((linha = br.readLine()) != null){
+            String[] dados = linha.split(";");
+            Participante p = new Participante(Integer.parseInt(dados[0]),dados[1], dados[2], dados[3], dados[4], dados[5], dados[6]);
+            participantes.add(p);
+        }
+        br.close();
+        for(Participante p :participantes){
             p.mostrar();
         }
+            return participantes;
     }
 }

@@ -4,6 +4,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
 
 public class Leilao {
     private int idLeilao;
@@ -49,21 +50,72 @@ public class Leilao {
         System.out.println("--------------------------");
     }
 
-    public void inserir()throws Exception{
-        FileWriter fw = new FileWriter("Leilao.txt",true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(idLeilao);
-        bw.newLine();
-        bw.close();
-    }
-    public Leilao consultarLeilao(Leilao l)throws Exception{
+    public Leilao consultarLeilao(int id)throws Exception{
         FileReader fr = new FileReader("Leilao.txt");
         BufferedReader br = new BufferedReader(fr);
         String linha = "";
-        
         while((linha = br.readLine()) != null){
-            return l;
+            String[] dados = linha.split(";");
+            if(Integer.parseInt(dados[0]) == id){
+                System.out.println("leilão encontrado!");
+                return new Leilao(Integer.parseInt(dados[0]),Date.valueOf(dados[1]),Time.valueOf(dados[2]),Date.valueOf(dados[3]),Time.valueOf(dados[4]),Boolean.valueOf(dados[5]));
+            }
+        }
+        br.close();
+        System.out.println("leilão não encontrado!");
+        return null;
+    }
+
+    public Boolean registrarLeilao(Leilao l)throws Exception{
+        Leilao resultado = consultarLeilao(l.getId());
+
+        if(resultado != null){
+            System.out.println("Erro: Leilão já existente!");
+            return false;
+        }else{
+            FileWriter fw = new FileWriter("Leilao.txt",true);
+        BufferedWriter bw = new BufferedWriter(fw);
+        bw.write(idLeilao +";"+ dataInicioLeilao +";"+ horaInicioLeilao +";"+ dataFimLeilao +";"+ horaFimLeilao +";"+statusLeilao);
+        bw.newLine();
+        bw.close();
+     
+            System.out.println("Leilão cadastrado com sucesso!");
+            return true;
+        }
+    }
+    public Boolean iniciarLeilao(Leilao l)throws Exception{
+        FileReader fr = new FileReader("Leilao.txt");
+        BufferedReader br = new BufferedReader(fr); //perguntar como devo alterar o arquivo
+
+        Leilao resultado = consultarLeilao(l.getId());
+
+        if(resultado != null){
+            resultado.setStatus(true);
+            System.out.println("Leilão iniciado");
+            return getStatus();
+        }else{
+            System.out.println("leilão não encontrado!");
         }
         return null;
     }
+
+    public Boolean finalizarLeilao(Leilao l)throws Exception{
+        Leilao resultado = consultarLeilao(l.getId());
+
+        if(resultado != null){
+            resultado.setStatus(false);
+            System.out.println("Leilão finalizado");
+            return getStatus();
+        }else{
+            System.out.println("leilão não encontrado!");
+        }
+        return null;
+    }
+     public ArrayList<Leilao> listarLeiloes(){
+        ArrayList<Leilao> leiloes = new ArrayList<>();
+        for( Leilao l :leiloes){
+            l.mostrar();
+        }
+        return leiloes;
+     }
 }
