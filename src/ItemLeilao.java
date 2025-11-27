@@ -22,6 +22,9 @@ public class ItemLeilao {
         this.itemArrematado = itemArrematado;
         this.lanceArrematante = lanceArrematante;
     }
+    public ItemLeilao(int id) { 
+        this.idItem = id;
+    }
 
 
     public int getId(){return idItem;}
@@ -99,12 +102,21 @@ public class ItemLeilao {
         }
     }
 
-    public void arrematarItem(Lance l){
-        Double lanceAtual = lanceMinimo;
-        if(l.getValor() > lanceAtual){
-            lanceAtual += l.getValor();
-        }
+   public boolean arrematarItem(Lance l) {
+    if (this.itemArrematado != null && this.itemArrematado) {
+        System.out.println("Item já foi arrematado.");
+        return false;
     }
+    if (l.getValor() < this.lanceMinimo) {
+        System.out.println("Lance insuficiente. Valor mínimo: " + this.lanceMinimo);
+        return false;
+    }
+    this.lanceArrematante = l;
+    this.itemArrematado = true;
+    System.out.println("Item arrematado com sucesso por " + l.getParticipante().getNome() +
+                       " com lance de " + l.getValor());
+    return true;
+}
 
     public ArrayList<ItemLeilao> listarItens()throws Exception{
 

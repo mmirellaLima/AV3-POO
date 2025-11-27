@@ -53,6 +53,10 @@ public class Participante{
         System.out.println("--------------------------");
     }
 
+    public Participante(String nome) { 
+        this.nomeParticipante = nome;
+    }
+
     public Participante loginParticipante()throws Exception{
         FileReader fr = new FileReader("Participante.txt");
         BufferedReader br = new BufferedReader(fr);

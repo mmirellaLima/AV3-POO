@@ -88,21 +88,28 @@ public class Lance {
             return true ; 
     }
 
-    public ArrayList<Lance> listarLances(){
+    public ArrayList<Lance> listarLances()throws Exception{
         ArrayList<Lance> lances = new ArrayList<>();
+        
         FileReader fr = new FileReader("Lance.txt");
         BufferedReader br = new BufferedReader(fr);
         String linha = "";
-        while((linha=br.readLine()) != null){
-            String [] dados = linha.split(";");
-            Lance l = new Lance(Integer.parseInt(dados[0]),Participante.getId(dados[1]),(dados[2]),Double.valueOf(dados[3]),Date.valueOf(dados[4]),Time.valueOf(dados[5]));
+        
+        while((linha = br.readLine()) != null){
+                String[] dados = linha.split(";");
+                int idLance = Integer.parseInt(dados[0]);
+                String nomeParticipante = dados[1];
+                int idItem = Integer.parseInt(dados[2]);
+                Double valor = Double.valueOf(dados[3]);
+                Date data = Date.valueOf(dados[4]);
+                Time hora = Time.valueOf(dados[5]);
 
-            lances.add(l);
+                Participante objParticipante = new Participante(nomeParticipante);
+                ItemLeilao objItem = new ItemLeilao(idItem);
+                lances.add(new Lance(idLance, objParticipante, objItem, valor, data, hora));
+            
         }
-        br.close();
-        for( Lance l :lances){
-            l.mostrar();
-        }
+        for(Lance l : lances) l.mostrar();
         return lances;
     }
 }

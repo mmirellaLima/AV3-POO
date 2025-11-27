@@ -31,6 +31,10 @@ public class Leilao {
         this.statusLeilao = null;
     }
 
+    public Leilao(int id) { 
+        this.idLeilao = id;
+    }
+
     public int getId(){return idLeilao;}
     public void setId(int id){this.idLeilao = id;}
 
