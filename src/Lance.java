@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -17,6 +21,14 @@ public class Lance {
         this.valorLance = valor;
         this.dataLance = data;
         this.horaLance = hora;
+    }
+     public Lance(){
+        this.idLance = 0;
+        this.participante = null;
+        this.itemLeilao = null;
+        this.valorLance = 0.0;
+        this.dataLance = null;
+        this.horaLance = null;
     }
 
     public int getId(){return idLance;}
@@ -46,8 +58,48 @@ public class Lance {
         System.out.println("--------------------------");
     }
 
+    public Boolean registrarLance()throws Exception{
+        Boolean existe = false;
+
+        try(FileReader fr = new FileReader("Lance.txt");
+            BufferedReader br = new BufferedReader(fr);){
+
+            String linha = "";
+            while ((linha = br.readLine())!= null) {
+            String [] dados = linha.split(";");
+            if(Integer.parseInt(dados[0]) == this.idLance){
+                existe = true;
+                break;
+                }
+            }
+        }
+
+         if(existe){
+            System.out.println("Erro: Lance já existente!");
+            return false;
+        }
+        try(FileWriter fw = new FileWriter("Lance.txt",true);
+        BufferedWriter bw = new BufferedWriter(fw);){
+            bw.write(idLance +";"+ participante +";"+ itemLeilao +";"+ valorLance +";"+ dataLance +";"+ horaLance);
+            bw.newLine();
+            bw.close();
+        }
+        System.out.println("Leilão cadastrado com sucesso!");
+            return true ; 
+    }
+
     public ArrayList<Lance> listarLances(){
         ArrayList<Lance> lances = new ArrayList<>();
+        FileReader fr = new FileReader("Lance.txt");
+        BufferedReader br = new BufferedReader(fr);
+        String linha = "";
+        while((linha=br.readLine()) != null){
+            String [] dados = linha.split(";");
+            Lance l = new Lance(Integer.parseInt(dados[0]),Participante.getId(dados[1]),(dados[2]),Double.valueOf(dados[3]),Date.valueOf(dados[4]),Time.valueOf(dados[5]));
+
+            lances.add(l);
+        }
+        br.close();
         for( Lance l :lances){
             l.mostrar();
         }
